@@ -2,396 +2,848 @@
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Punto Fijo — Insumos Industriales</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Portal de Demos Comerciales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#1b1d21;
-    --panel:#24272c;
-    --panel-light:#2e3238;
-    --text:#e7e8ea;
-    --text-dim:#9aa0a6;
-    --accent:#f5b400;
-    --accent-dim:#c99400;
-    --whatsapp:#25d366;
-    --whatsapp-dark:#1ea952;
-    --line:#3a3e44;
+    --bg:#f8f9fa;
+    --bg-soft:#f3f4f6;
+    --panel:#ffffff;
+    --panel-light:#f6f7f8;
+    --text:#1f2937;
+    --text-dim:#6b7280;
+    --accent:#7fb69e;        /* verde salvia */
+    --accent-dim:#5f9c82;
+    --accent-soft:#e6f2ec;   /* verde salvia muy claro */
+    --accent2:#b9aee0;       /* lila lavanda */
+    --accent2-dim:#9c8dd1;
+    --accent2-soft:#f1eefb;
+    --accent3:#e8c9a0;       /* arena */
+    --accent3-dim:#d9ab6f;
+    --accent3-soft:#faf1e4;
+    --whatsapp:#3fcf7f;
+    --whatsapp-dark:#2eb86b;
+    --line:#e5e7eb;
+    --shadow-sm:0 2px 10px rgba(31,41,55,0.04);
+    --shadow-md:0 8px 28px rgba(31,41,55,0.07);
+    --shadow-lg:0 14px 40px rgba(31,41,55,0.10);
+    --radius-lg:20px;
+    --radius-md:16px;
+    --radius-sm:12px;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{
     background:var(--bg);
     color:var(--text);
-    font-family:'Inter', sans-serif;
-    line-height:1.5;
+    font-family:'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3{
-    font-family:'Oswald', sans-serif;
-    text-transform:uppercase;
-    letter-spacing:0.02em;
+    font-family:'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    text-transform:none;
+    letter-spacing:-0.01em;
+    font-weight:700;
+    color:var(--text);
   }
-  .mono{font-family:'IBM Plex Mono', monospace;}
+  .mono{font-family:'Inter', sans-serif; font-variant-numeric:tabular-nums;}
   a{color:inherit; text-decoration:none;}
   img{max-width:100%; display:block;}
+  button{font-family:inherit;}
+  input, select{font-family:inherit;}
 
-  /* ===== Header ===== */
+  .view{
+    display:none;
+    opacity:0;
+    background:var(--bg);
+    min-height:100vh;
+  }
+  .view.active{
+    display:block;
+    animation:fadeSlideIn .45s cubic-bezier(.22,.68,0,1.01) forwards;
+  }
+  @keyframes fadeSlideIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+  }
+
+  /* ===== Header genérico (dentro de cada demo) ===== */
   header{
     position:sticky; top:0; z-index:50;
-    background:rgba(27,29,33,0.92);
-    backdrop-filter:blur(6px);
+    background:var(--bg);
     border-bottom:1px solid var(--line);
   }
   .header-inner{
     max-width:1180px; margin:0 auto;
-    padding:16px 24px;
+    padding:16px 20px;
     display:flex; align-items:center; justify-content:space-between;
-    gap:16px;
+    gap:12px;
   }
   .logo{
     display:flex; align-items:center; gap:10px;
-    font-family:'Oswald', sans-serif;
-    font-size:1.15rem; font-weight:700;
-    letter-spacing:0.03em;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-size:1.02rem; font-weight:700;
+    letter-spacing:-0.01em;
   }
   .logo .mark{
-    width:30px; height:30px;
-    background:var(--accent);
-    color:#1b1d21;
+    width:34px; height:34px;
+    background:var(--accent-soft);
+    color:var(--accent-dim);
     display:flex; align-items:center; justify-content:center;
-    font-weight:700; font-size:0.95rem;
-    clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%);
+    font-weight:700; font-size:1rem;
+    border-radius:11px;
+    flex:0 0 auto;
   }
-  nav{display:flex; gap:26px; font-size:0.92rem; color:var(--text-dim);}
-  nav a:hover{color:var(--accent);}
-  .header-cta{
-    display:flex; align-items:center; gap:8px;
-    font-size:0.82rem; color:var(--text-dim);
-    padding:7px 12px;
+  .back-btn{
+    display:flex; align-items:center; gap:6px;
+    font-size:0.8rem; font-weight:600; color:var(--text-dim);
+    padding:9px 14px;
     border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:border-color .18s ease, color .18s ease, background .18s ease, transform .15s ease;
   }
-  .header-cta strong{color:var(--text); font-weight:600;}
-  @media (max-width:760px){
-    nav{display:none;}
-    .header-cta span{display:none;}
-  }
+  .back-btn:hover{color:var(--text); border-color:#d1d5db; background:var(--panel-light); transform:translateY(-1px);}
 
-  /* ===== Hero ===== */
-  .hero{
-    position:relative;
-    padding:88px 24px 70px;
-    overflow:hidden;
-    border-bottom:1px solid var(--line);
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size:42px 42px;
-    background-position:center;
-    background-color:var(--bg);
-  }
-  .hero::before{
-    content:"";
-    position:absolute; inset:0;
-    background:radial-gradient(ellipse at 30% 20%, rgba(27,29,33,0.2), var(--bg) 72%);
-  }
-  .hero-inner{
-    position:relative; max-width:1180px; margin:0 auto;
-  }
-  .eyebrow{
-    display:inline-flex; align-items:center; gap:8px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.78rem; letter-spacing:0.08em;
-    color:var(--accent);
-    border:1px solid var(--accent-dim);
-    padding:5px 10px;
-    margin-bottom:22px;
-  }
-  .hero h1{
-    font-size:clamp(2.2rem, 5.5vw, 4rem);
-    font-weight:700;
-    max-width:780px;
-    line-height:1.05;
-  }
-  .hero h1 em{
-    font-style:normal;
-    color:var(--accent);
-  }
-  .hero p{
-    margin-top:20px;
-    max-width:520px;
-    color:var(--text-dim);
-    font-size:1.02rem;
-  }
-  .hero-actions{
-    margin-top:34px;
-    display:flex; flex-wrap:wrap; gap:14px;
-  }
+  /* ===== Botones genéricos ===== */
   .btn{
-    display:inline-flex; align-items:center; gap:8px;
-    padding:13px 22px;
-    font-family:'Inter', sans-serif;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:14px 24px;
     font-weight:600; font-size:0.92rem;
     cursor:pointer; border:none;
-    transition:transform 0.12s ease, background 0.15s ease;
+    border-radius:14px;
+    transition:transform 0.15s ease, background 0.18s ease, box-shadow .18s ease, opacity .15s ease;
+    box-shadow:var(--shadow-sm);
   }
-  .btn:hover{transform:translateY(-1px);}
-  .btn-primary{background:var(--accent); color:#1b1d21;}
-  .btn-primary:hover{background:#ffca2c;}
-  .btn-ghost{background:transparent; color:var(--text); border:1px solid var(--line);}
-  .btn-ghost:hover{border-color:var(--text-dim);}
+  .btn:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
+  .btn:active{transform:translateY(0); box-shadow:var(--shadow-sm);}
+  .btn-primary{background:var(--text); color:#fff;}
+  .btn-primary:hover{background:#111827;}
+  .btn-ghost{background:var(--panel); color:var(--text); border:1px solid var(--line); box-shadow:none;}
+  .btn-ghost:hover{border-color:#d1d5db; box-shadow:var(--shadow-sm);}
+  .btn-wa{
+    background:var(--whatsapp); color:#fff;
+  }
+  .btn-wa:hover{background:var(--whatsapp-dark);}
+  .btn-block{width:100%;}
+  .btn:disabled{opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none;}
 
-  .stats{
-    margin-top:56px;
-    display:grid; grid-template-columns:repeat(4,1fr);
-    border-top:1px solid var(--line);
-    max-width:780px;
+  .wa-icon{width:16px; height:16px; flex:0 0 auto;}
+
+  /* =======================================================
+     PANTALLA PRINCIPAL — SELECTOR DE RUBRO
+  ======================================================= */
+  #view-selector{
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    padding:56px 22px 40px;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(127,182,158,0.14), transparent 45%),
+      radial-gradient(circle at 88% 18%, rgba(185,174,224,0.16), transparent 45%),
+      var(--bg);
   }
-  .stat{padding:18px 20px 0; border-left:1px solid var(--line);}
-  .stat:first-child{border-left:none; padding-left:0;}
-  .stat .num{font-family:'Oswald',sans-serif; font-size:1.7rem; font-weight:600; color:var(--accent);}
-  .stat .label{font-size:0.78rem; color:var(--text-dim); margin-top:2px;}
-  @media (max-width:640px){
-    .stats{grid-template-columns:repeat(2,1fr); gap:18px 0;}
-    .stat{border-left:none; padding-left:0;}
+  .selector-wrap{
+    max-width:520px; margin:0 auto; width:100%;
+    flex:1; display:flex; flex-direction:column;
+  }
+  .selector-eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--accent-dim);
+    background:var(--accent-soft);
+    border-radius:999px;
+    padding:7px 14px;
+    margin:0 auto 22px;
+  }
+  .selector-title{
+    text-align:center;
+    font-size:clamp(1.7rem, 7vw, 2.3rem);
+    font-weight:800;
+    line-height:1.2;
+    margin-bottom:12px;
+  }
+  .selector-title em{font-style:normal; color:var(--accent-dim);}
+  .selector-sub{
+    text-align:center;
+    color:var(--text-dim);
+    font-size:0.95rem;
+    max-width:380px;
+    margin:0 auto 40px;
+  }
+  .demo-cards{
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .demo-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:24px 22px;
+    display:flex; align-items:center; gap:18px;
+    cursor:pointer; text-align:left;
+    width:100%;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-sm);
+    transition:box-shadow .22s ease, transform .22s ease, border-color .22s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .demo-card:hover{box-shadow:var(--shadow-lg); transform:translateY(-3px); border-color:transparent;}
+  .demo-card .emoji{
+    font-size:1.9rem; flex:0 0 auto;
+    width:58px; height:58px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--card-soft, var(--accent-soft));
+    border-radius:16px;
+  }
+  .demo-card .info{flex:1; min-width:0;}
+  .demo-card .info h3{
+    font-size:1.02rem; font-weight:700; letter-spacing:-0.01em;
+    color:var(--text); margin-bottom:4px;
+    text-transform:none;
+  }
+  .demo-card .info p{
+    font-size:0.84rem; color:var(--text-dim);
+    text-transform:none; letter-spacing:normal;
+  }
+  .demo-card .arrow{
+    font-size:1.2rem; color:var(--card-accent, var(--accent-dim)); flex:0 0 auto;
+    transition:transform .22s ease;
+  }
+  .demo-card:hover .arrow{ transform:translateX(3px); }
+  .demo-card.card-1{--card-accent:var(--accent-dim); --card-soft:var(--accent-soft);}
+  .demo-card.card-2{--card-accent:var(--accent2-dim); --card-soft:var(--accent2-soft);}
+  .demo-card.card-3{--card-accent:var(--accent3-dim); --card-soft:var(--accent3-soft);}
+
+  .selector-footer{
+    text-align:center; margin-top:40px;
+    font-size:0.74rem; color:var(--text-dim); opacity:0.8;
   }
 
-  /* ===== Filter bar ===== */
+  /* =======================================================
+     DEMO 1 — CATÁLOGO / GASTRONOMÍA
+  ======================================================= */
+  .hero{
+    position:relative;
+    padding:40px 20px 30px;
+    overflow:hidden;
+    background:var(--bg);
+  }
+  .hero-inner{ max-width:1180px; margin:0 auto; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--accent-dim);
+    background:var(--accent-soft);
+    border-radius:999px;
+    padding:6px 12px;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(1.7rem, 6vw, 2.5rem);
+    font-weight:800; max-width:780px; line-height:1.15;
+  }
+  .hero h1 em{font-style:normal; color:var(--accent-dim);}
+  .hero p{ margin-top:14px; max-width:520px; color:var(--text-dim); font-size:0.95rem; }
+
   .filter-bar{
     position:sticky; top:65px; z-index:40;
     background:var(--bg);
+    padding:14px 20px;
     border-bottom:1px solid var(--line);
-    padding:16px 24px;
   }
   .filter-inner{
     max-width:1180px; margin:0 auto;
-    display:flex; align-items:center; gap:10px;
+    display:flex; align-items:center; gap:8px;
     overflow-x:auto;
   }
   .pill{
     flex:0 0 auto;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.78rem; letter-spacing:0.03em;
-    padding:8px 14px;
+    font-size:0.8rem; font-weight:600; letter-spacing:0.01em;
+    padding:9px 16px;
     border:1px solid var(--line);
+    border-radius:999px;
     color:var(--text-dim);
-    cursor:pointer;
-    white-space:nowrap;
+    background:var(--panel);
+    cursor:pointer; white-space:nowrap;
+    transition:all .18s ease;
   }
-  .pill:hover{color:var(--text); border-color:var(--text-dim);}
-  .pill.active{
-    background:var(--accent); color:#1b1d21; border-color:var(--accent);
-  }
+  .pill:hover{color:var(--text); border-color:#d1d5db;}
+  .pill.active{background:var(--text); color:#fff; border-color:var(--text);}
 
-  /* ===== Catalog ===== */
-  .catalog{
-    max-width:1180px; margin:0 auto;
-    padding:56px 24px 80px;
-  }
+  .catalog{ max-width:1180px; margin:0 auto; padding:32px 20px 140px; }
   .catalog-head{
     display:flex; align-items:baseline; justify-content:space-between;
-    margin-bottom:32px; flex-wrap:wrap; gap:10px;
+    margin-bottom:22px; flex-wrap:wrap; gap:8px;
   }
-  .catalog-head h2{font-size:1.7rem;}
-  .catalog-head .count{font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:var(--text-dim);}
+  .catalog-head h2{font-size:1.4rem;}
+  .catalog-head .count{font-size:0.8rem; color:var(--text-dim);}
 
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:22px;
-  }
-  @media (max-width:920px){ .grid{grid-template-columns:repeat(2,1fr);} }
-  @media (max-width:600px){ .grid{grid-template-columns:1fr;} }
+  .grid{ display:grid; grid-template-columns:1fr; gap:18px; }
+  @media (min-width:620px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  @media (min-width:960px){ .grid{grid-template-columns:repeat(3,1fr);} }
 
   .card{
     background:var(--panel);
     border:1px solid var(--line);
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
     display:flex; flex-direction:column;
-    transition:border-color 0.15s ease, transform 0.15s ease;
+    box-shadow:var(--shadow-sm);
+    transition:box-shadow 0.22s ease, transform 0.22s ease;
   }
-  .card:hover{border-color:var(--accent-dim); transform:translateY(-2px);}
+  .card:hover{box-shadow:var(--shadow-md); transform:translateY(-3px);}
   .card-media{
-    aspect-ratio:4/3;
-    background:var(--panel-light);
+    aspect-ratio:4/3; background:var(--accent-soft);
     display:flex; align-items:center; justify-content:center;
-    font-size:2.4rem;
-    border-bottom:1px solid var(--line);
-    position:relative;
+    font-size:2.6rem; position:relative;
   }
   .card-tag{
-    position:absolute; top:10px; left:10px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.68rem; letter-spacing:0.05em;
-    background:var(--bg); color:var(--accent);
-    padding:3px 8px; border:1px solid var(--accent-dim);
+    position:absolute; top:12px; left:12px;
+    font-size:0.68rem; font-weight:700; letter-spacing:0.03em;
+    background:rgba(255,255,255,0.92); color:var(--accent-dim);
+    padding:4px 10px; border-radius:999px;
   }
-  .card-body{padding:18px 18px 20px; display:flex; flex-direction:column; gap:10px; flex:1;}
-  .card-sku{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.72rem; letter-spacing:0.06em;
-    color:var(--text-dim);
-  }
-  .card-name{font-size:1.02rem; font-weight:600; line-height:1.3;}
-  .card-spec{font-size:0.85rem; color:var(--text-dim); flex:1;}
+  .card-body{padding:18px; display:flex; flex-direction:column; gap:8px; flex:1;}
+  .card-name{font-size:1rem; font-weight:700; line-height:1.3;}
+  .card-spec{font-size:0.83rem; color:var(--text-dim); flex:1;}
   .card-price-row{
     display:flex; align-items:center; justify-content:space-between;
-    padding-top:12px; border-top:1px dashed var(--line);
+    padding-top:12px; border-top:1px solid var(--line);
   }
-  .card-price{font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:1.05rem; color:var(--text);}
-  .card-price .cur{font-size:0.7rem; color:var(--text-dim); margin-right:3px;}
-  .wa-btn{
-    margin-top:14px;
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    background:var(--whatsapp); color:#0b1c12;
-    font-weight:600; font-size:0.85rem;
-    padding:11px 14px; border:none; cursor:pointer;
-    transition:background 0.15s ease;
-  }
-  .wa-btn:hover{background:#2fe077;}
-  .wa-btn svg{width:16px; height:16px; flex:0 0 auto;}
+  .card-price{font-weight:700; font-size:1.02rem; color:var(--text);}
+  .card-price .cur{font-size:0.68rem; font-weight:600; color:var(--text-dim); margin-right:3px;}
 
-  /* ===== Footer ===== */
-  footer{
+  .qty-row{
+    display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px;
+  }
+  .qty-ctrl{
+    display:flex; align-items:center; gap:0;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .qty-ctrl button{
+    width:34px; height:34px;
+    background:var(--panel-light); color:var(--text);
+    border:none; cursor:pointer; font-size:1.05rem; font-weight:600;
+    transition:background .15s ease;
+  }
+  .qty-ctrl button:hover{background:var(--accent-soft); color:var(--accent-dim);}
+  .qty-ctrl .qty-val{
+    width:36px; text-align:center; font-size:0.9rem; font-weight:600;
+  }
+  .add-btn{
+    flex:1;
+    background:var(--accent-soft); color:var(--accent-dim); border:none;
+    padding:10px 12px; font-weight:700; font-size:0.82rem; cursor:pointer;
+    border-radius:12px;
+    transition:background .18s ease, color .18s ease;
+  }
+  .add-btn:hover{background:var(--accent); color:#fff;}
+
+  /* Carrito flotante */
+  .cart-bar{
+    position:fixed; left:0; right:0; bottom:0; z-index:55;
+    background:var(--panel);
     border-top:1px solid var(--line);
-    padding:44px 24px 34px;
+    box-shadow:0 -10px 30px rgba(31,41,55,0.08);
+    padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+    transform:translateY(110%);
+    transition:transform .28s cubic-bezier(.22,.68,0,1.01);
+    border-radius:20px 20px 0 0;
   }
-  .footer-inner{
+  .cart-bar.show{transform:translateY(0);}
+  .cart-bar-inner{
     max-width:1180px; margin:0 auto;
-    display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px;
+    display:flex; align-items:center; gap:12px;
   }
-  .footer-inner h3{font-size:1.05rem; margin-bottom:8px;}
-  .footer-inner p{color:var(--text-dim); font-size:0.88rem; max-width:340px;}
-  .footer-note{
-    margin-top:30px; padding-top:20px; border-top:1px solid var(--line);
-    max-width:1180px; margin-left:auto; margin-right:auto;
-    font-size:0.78rem; color:var(--text-dim);
-    font-family:'IBM Plex Mono', monospace;
+  .cart-info{flex:1; min-width:0;}
+  .cart-info .items{font-size:0.78rem; color:var(--text-dim);}
+  .cart-info .total{font-weight:700; font-size:1.08rem;}
+  .cart-bar .btn{padding:13px 20px; font-size:0.86rem; white-space:nowrap;}
+
+  /* =======================================================
+     DEMO 2 — SISTEMA DE TURNOS
+  ======================================================= */
+  .turnos-wrap{ max-width:560px; margin:0 auto; padding:30px 20px 60px; }
+  .turnos-hero{ margin-bottom:28px; }
+  .turnos-hero h1{ font-size:clamp(1.5rem,6vw,2.1rem); }
+  .turnos-hero p{ margin-top:10px; color:var(--text-dim); font-size:0.93rem; }
+
+  .form-block{ margin-bottom:28px; }
+  .form-label{
+    font-size:0.76rem; font-weight:700; letter-spacing:0.03em; text-transform:uppercase;
+    color:var(--accent2-dim); margin-bottom:12px; display:block;
+  }
+  .service-list{ display:flex; flex-direction:column; gap:10px; }
+  .service-option{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:var(--panel); border:1px solid var(--line);
+    padding:16px 18px; cursor:pointer;
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-sm);
+    transition:border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .service-option:hover{border-color:var(--accent2); transform:translateY(-1px);}
+  .service-option.selected{border-color:var(--accent2); background:var(--accent2-soft); box-shadow:var(--shadow-md);}
+  .service-option .s-name{font-weight:700; font-size:0.95rem;}
+  .service-option .s-dur{font-size:0.78rem; color:var(--text-dim); margin-top:2px;}
+  .service-option .s-price{font-weight:700; color:var(--accent2-dim); white-space:nowrap;}
+
+  .day-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .day-btn{
+    flex:1 1 auto; min-width:90px;
+    background:var(--panel); border:1px solid var(--line); color:var(--text);
+    padding:12px 10px; cursor:pointer; font-size:0.85rem; font-weight:600; text-align:center;
+    border-radius:var(--radius-sm);
+    transition:all .18s ease;
+  }
+  .day-btn:hover{border-color:var(--accent2);}
+  .day-btn.selected{background:var(--accent2); border-color:var(--accent2); color:#fff; box-shadow:var(--shadow-sm);}
+
+  .date-input, .time-select, .text-input{
+    width:100%;
+    background:var(--panel); border:1px solid var(--line); color:var(--text);
+    padding:13px 16px; font-size:0.92rem;
+    border-radius:var(--radius-sm);
+    transition:border-color .18s ease, box-shadow .18s ease;
+  }
+  .date-input:focus, .time-select:focus, .text-input:focus{ outline:none; border-color:var(--accent2); box-shadow:0 0 0 4px var(--accent2-soft); }
+
+  .time-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin-top:12px; }
+  .time-slot{
+    background:var(--panel); border:1px solid var(--line); color:var(--text);
+    padding:11px 4px; cursor:pointer; font-size:0.8rem; font-weight:600; text-align:center;
+    border-radius:var(--radius-sm);
+    transition:all .18s ease;
+  }
+  .time-slot:hover{border-color:var(--accent2);}
+  .time-slot.selected{background:var(--accent2); border-color:var(--accent2); color:#fff; box-shadow:var(--shadow-sm);}
+
+  .input-row{ display:flex; flex-direction:column; gap:12px; }
+
+  .summary-box{
+    background:var(--accent2-soft); border:1px solid transparent;
+    border-radius:var(--radius-md);
+    padding:18px; margin-bottom:22px; font-size:0.87rem; color:var(--text-dim); line-height:1.9;
+  }
+  .summary-box strong{color:var(--text);}
+
+  .btn-accent2{ background:var(--accent2-dim); color:#fff; }
+  .btn-accent2:hover{ background:#8b7bd6; }
+
+  /* =======================================================
+     DEMO 3 — FICHA GOOGLE + WHATSAPP BUSINESS
+  ======================================================= */
+  .ficha-wrap{ max-width:560px; margin:0 auto; padding:30px 20px 60px; }
+  .ficha-hero{ margin-bottom:24px; }
+  .ficha-hero h1{ font-size:clamp(1.5rem,6vw,2.1rem); }
+  .ficha-hero p{ margin-top:10px; color:var(--text-dim); font-size:0.93rem; }
+
+  .gmaps-card{
+    background:#fff; color:#202124;
+    border-radius:var(--radius-lg); overflow:hidden;
+    box-shadow:var(--shadow-lg);
+    border:1px solid var(--line);
+    margin-bottom:30px;
+  }
+  .gmaps-photos{
+    display:grid; grid-template-columns:2fr 1fr; gap:3px; height:150px;
+  }
+  .gmaps-photos > div{
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.8rem; color:#fff;
+  }
+  .gmaps-photos .ph1{ background:linear-gradient(135deg,var(--accent3),var(--accent3-dim)); grid-row:1/3; }
+  .gmaps-photos .ph2{ background:linear-gradient(135deg,var(--accent),var(--accent-dim)); }
+  .gmaps-photos .ph3{ background:linear-gradient(135deg,var(--accent2),var(--accent2-dim)); }
+  .gmaps-body{ padding:18px; }
+  .gmaps-title{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.15rem; font-weight:700; text-transform:none; letter-spacing:0; }
+  .gmaps-rating{ display:flex; align-items:center; gap:6px; margin-top:6px; font-size:0.88rem; }
+  .gmaps-rating .stars{ color:#f4b740; letter-spacing:1px; }
+  .gmaps-rating .count{ color:#5f6368; }
+  .gmaps-cat{ font-size:0.85rem; color:#5f6368; margin-top:2px; }
+  .gmaps-status{ display:flex; align-items:center; gap:6px; margin-top:12px; font-size:0.86rem; }
+  .gmaps-status .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent-dim); }
+  .gmaps-status strong{ color:var(--accent-dim); }
+  .gmaps-addr{ font-size:0.86rem; color:#3c4043; margin-top:8px; }
+  .gmaps-actions{ display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+  .gmaps-actions button{
+    flex:1; min-width:90px;
+    background:var(--accent2-soft); color:var(--accent2-dim); border:none; border-radius:12px;
+    padding:11px 8px; font-size:0.78rem; font-weight:700; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    transition:transform .15s ease, background .18s ease;
+  }
+  .gmaps-actions button:hover{ transform:translateY(-2px); }
+  .gmaps-actions button.wa{ background:#e3f9ec; color:var(--whatsapp-dark); }
+  .gmaps-actions button span.ic{ font-size:1.15rem; }
+
+  .benefits-title{ font-size:1.12rem; margin:28px 0 16px; }
+  .benefit-list{ display:flex; flex-direction:column; gap:12px; }
+  .benefit-item{
+    display:flex; gap:14px; align-items:flex-start;
+    background:var(--panel); border:1px solid var(--line); padding:16px 18px;
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-sm);
+    transition:box-shadow .18s ease, transform .18s ease;
+  }
+  .benefit-item:hover{ box-shadow:var(--shadow-md); transform:translateY(-2px); }
+  .benefit-item .b-ic{
+    font-size:1.3rem; flex:0 0 auto; width:42px; height:42px;
+    background:var(--accent-soft);
+    border-radius:13px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .benefit-item .b-text h4{
+    font-size:0.92rem; font-weight:700; text-transform:none; letter-spacing:0; margin-bottom:3px;
+  }
+  .benefit-item .b-text p{ font-size:0.81rem; color:var(--text-dim); }
+
+  .note-card{
+    margin-top:26px; padding:16px 18px;
+    background:var(--bg-soft);
+    border-radius:var(--radius-md);
+    font-size:0.78rem; color:var(--text-dim); line-height:1.7;
   }
 
-  /* ===== Floating WhatsApp ===== */
-  .float-wa{
-    position:fixed; bottom:22px; right:22px; z-index:60;
-    background:var(--whatsapp); color:#0b1c12;
-    width:56px; height:56px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 6px 18px rgba(0,0,0,0.4);
-    border:none; cursor:pointer;
-    transition:transform 0.15s ease;
+  /* ===== Toast ===== */
+  .toast{
+    position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-140%);
+    background:var(--text); color:#fff;
+    border-radius:999px;
+    padding:12px 20px; font-size:0.83rem; font-weight:600; z-index:80;
+    box-shadow:var(--shadow-lg);
+    transition:transform .3s cubic-bezier(.22,.68,0,1.01); white-space:nowrap;
   }
-  .float-wa:hover{transform:scale(1.06);}
-  .float-wa svg{width:26px; height:26px;}
+  .toast.show{ transform:translateX(-50%) translateY(0); }
+
+  ::-webkit-scrollbar{ height:6px; width:6px; }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:999px; }
 
   @media (prefers-reduced-motion: reduce){
-    *{transition:none !important;}
+    *{transition:none !important; animation:none !important;}
     html{scroll-behavior:auto;}
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="logo"><span class="mark">PF</span> Punto Fijo</div>
-    <nav>
-      <a href="#catalogo">Catálogo</a>
-      <a href="#categorias">Categorías</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-    <div class="header-cta">🇦🇷 <span>Envíos a</span> <strong>todo el país</strong></div>
-  </div>
-</header>
+<div id="toast" class="toast"></div>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="eyebrow">● STOCK DISPONIBLE — DESPACHO 24/48HS</div>
-    <h1>Insumos industriales<br>con <em>envío nacional</em> real.</h1>
-    <p>Herramientas, ferretería, seguridad y medición. Pedí precio y tiempo de entrega a tu localidad directo por WhatsApp, sin formularios.</p>
-    <div class="hero-actions">
-      <a href="#catalogo" class="btn btn-primary">Ver catálogo</a>
-      <a id="hero-wa" href="#" target="_blank" class="btn btn-ghost">Hablar con un asesor</a>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="num">240+</div><div class="label">SKUs en stock</div></div>
-      <div class="stat"><div class="num">24</div><div class="label">provincias con envío</div></div>
-      <div class="stat"><div class="num">24/48h</div><div class="label">despacho de pedido</div></div>
-      <div class="stat"><div class="num">4</div><div class="label">rubros principales</div></div>
-    </div>
-  </div>
-</section>
+<!-- =======================================================
+     PANTALLA PRINCIPAL — SELECTOR DE RUBRO
+======================================================= -->
+<div id="view-selector" class="view active">
+  <div class="selector-wrap">
+    <div class="selector-eyebrow">● PORTAL DE DEMOS COMERCIALES</div>
+    <h1 class="selector-title">Elegí una <em>demo</em><br>para ver en acción</h1>
+    <p class="selector-sub">Tocá una tarjeta para explorar cada solución. Todas están optimizadas para verse desde el celular escaneando un código QR.</p>
 
-<div class="filter-bar" id="categorias">
-  <div class="filter-inner" id="filters"></div>
+    <div class="demo-cards">
+      <button class="demo-card card-1" onclick="showView('view-catalog')">
+        <div class="emoji">🛒</div>
+        <div class="info">
+          <h3>Catálogo / Gastronomía</h3>
+          <p>Menú digital con carrito y pedido directo por WhatsApp.</p>
+        </div>
+        <div class="arrow">→</div>
+      </button>
+
+      <button class="demo-card card-2" onclick="showView('view-turnos')">
+        <div class="emoji">📅</div>
+        <div class="info">
+          <h3>Sistema de Turnos</h3>
+          <p>Reserva de turnos para barberías, estética y servicios.</p>
+        </div>
+        <div class="arrow">→</div>
+      </button>
+
+      <button class="demo-card card-3" onclick="showView('view-ficha')">
+        <div class="emoji">📍</div>
+        <div class="info">
+          <h3>Ficha Google Maps + WhatsApp</h3>
+          <p>Ejemplo de ficha optimizada y beneficios de WhatsApp Business.</p>
+        </div>
+        <div class="arrow">→</div>
+      </button>
+    </div>
+
+    <div class="selector-footer">© 2026 · Portal de demos · Reemplazar datos de ejemplo antes de publicar</div>
+  </div>
 </div>
 
-<main class="catalog" id="catalogo">
-  <div class="catalog-head">
-    <h2>Catálogo</h2>
-    <div class="count" id="count"></div>
-  </div>
-  <div class="grid" id="grid"></div>
-</main>
-
-<footer id="contacto">
-  <div class="footer-inner">
-    <div>
-      <h3>Punto Fijo — Insumos Industriales</h3>
-      <p>Distribuidora de herramientas, ferretería, seguridad y medición. Cotizá tu envío nacional sin cargo por consulta.</p>
+<!-- =======================================================
+     DEMO 1 — CATÁLOGO / GASTRONOMÍA
+======================================================= -->
+<div id="view-catalog" class="view">
+  <header>
+    <div class="header-inner">
+      <div class="logo"><span class="mark">🍕</span> Sabor Express</div>
+      <button class="back-btn" onclick="showView('view-selector')">← Menú de demos</button>
     </div>
-    <div>
-      <h3>Contacto</h3>
-      <p>WhatsApp: +54 9 11 2233-4455<br>Lun a vie, 9 a 18h · Buenos Aires, AR</p>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">● PEDÍ ONLINE — RETIRO O DELIVERY</div>
+      <h1>Tu comida favorita a un <em>mensaje</em> de distancia.</h1>
+      <p>Armá tu pedido, sumá lo que quieras al carrito y enviálo directo por WhatsApp. Sin registros, sin vueltas.</p>
+    </div>
+  </section>
+
+  <div class="filter-bar">
+    <div class="filter-inner" id="filters"></div>
+  </div>
+
+  <main class="catalog">
+    <div class="catalog-head">
+      <h2>Menú</h2>
+      <div class="count" id="count"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <div class="cart-bar" id="cart-bar">
+    <div class="cart-bar-inner">
+      <div class="cart-info">
+        <div class="items" id="cart-items-label">0 productos</div>
+        <div class="total" id="cart-total">ARS 0</div>
+      </div>
+      <button class="btn btn-wa" id="send-order-btn">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39c1.44.79 3.06 1.2 4.71 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0012.05 2h-.01zm5.8 14.1c-.24.68-1.4 1.33-1.93 1.4-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.91-1.26-4.81-4.18-4.96-4.38-.14-.2-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.6.83 2.06.9 2.21.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.29.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.29.14.46.12.63-.07.18-.19.75-.87.95-1.17.19-.29.39-.24.64-.14.26.09 1.65.78 1.93.92.29.14.47.21.54.33.07.12.07.68-.17 1.36z"/></svg>
+        Pedir por WhatsApp
+      </button>
     </div>
   </div>
-  <div class="footer-note">© 2026 Punto Fijo — Sitio demo. Reemplazar número de WhatsApp y catálogo por datos reales antes de publicar.</div>
-</footer>
+</div>
 
-<a id="float-wa" class="float-wa" href="#" target="_blank" aria-label="Consultar por WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39c1.44.79 3.06 1.2 4.71 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0012.05 2h-.01zm5.8 14.1c-.24.68-1.4 1.33-1.93 1.4-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.91-1.26-4.81-4.18-4.96-4.38-.14-.2-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.6.83 2.06.9 2.21.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.29.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.29.14.46.12.63-.07.18-.19.75-.87.95-1.17.19-.29.39-.24.64-.14.26.09 1.65.78 1.93.92.29.14.47.21.54.33.07.12.07.68-.17 1.36z"/></svg>
-</a>
+<!-- =======================================================
+     DEMO 2 — SISTEMA DE TURNOS
+======================================================= -->
+<div id="view-turnos" class="view">
+  <header>
+    <div class="header-inner">
+      <div class="logo"><span class="mark" style="background:var(--accent2)">✂️</span> Studio Turnos</div>
+      <button class="back-btn" onclick="showView('view-selector')">← Menú de demos</button>
+    </div>
+  </header>
+
+  <div class="turnos-wrap">
+    <div class="turnos-hero">
+      <h1>Reservá tu turno</h1>
+      <p>Elegí el servicio, el día y el horario que más te convenga. Confirmamos por WhatsApp al instante.</p>
+    </div>
+
+    <div class="form-block">
+      <span class="form-label">1. Elegí el servicio</span>
+      <div class="service-list" id="service-list"></div>
+    </div>
+
+    <div class="form-block">
+      <span class="form-label">2. Elegí el día</span>
+      <div class="day-row" id="day-row"></div>
+      <input type="date" class="date-input" id="custom-date">
+    </div>
+
+    <div class="form-block">
+      <span class="form-label">3. Elegí el horario</span>
+      <div class="time-grid" id="time-grid"></div>
+    </div>
+
+    <div class="form-block">
+      <span class="form-label">4. Tus datos</span>
+      <div class="input-row">
+        <input type="text" class="text-input" id="turno-nombre" placeholder="Nombre y apellido">
+        <input type="tel" class="text-input" id="turno-celular" placeholder="Celular (ej: 11 2233-4455)">
+      </div>
+    </div>
+
+    <div class="summary-box" id="turno-summary">
+      Completá los datos para ver el resumen de tu turno.
+    </div>
+
+    <button class="btn btn-accent2 btn-block" id="reservar-btn">
+      📅 Reservar Turno
+    </button>
+  </div>
+</div>
+
+<!-- =======================================================
+     DEMO 3 — FICHA GOOGLE MAPS + WHATSAPP BUSINESS
+======================================================= -->
+<div id="view-ficha" class="view">
+  <header>
+    <div class="header-inner">
+      <div class="logo"><span class="mark" style="background:var(--accent3)">📍</span> Ficha Optimizada</div>
+      <button class="back-btn" onclick="showView('view-selector')">← Menú de demos</button>
+    </div>
+  </header>
+
+  <div class="ficha-wrap">
+    <div class="ficha-hero">
+      <h1>Así se ve tu negocio en Google</h1>
+      <p>Un ejemplo de cómo luce una ficha de Google Maps optimizada, con reseñas, fotos y horarios actualizados.</p>
+    </div>
+
+    <div class="gmaps-card">
+      <div class="gmaps-photos">
+        <div class="ph1">🏪</div>
+        <div class="ph2">📸</div>
+        <div class="ph3">✨</div>
+      </div>
+      <div class="gmaps-body">
+        <div class="gmaps-title">Tu Negocio — Nombre de Fantasía</div>
+        <div class="gmaps-rating">
+          <span class="stars">★★★★★</span>
+          <span>4.8</span>
+          <span class="count">(128 reseñas)</span>
+        </div>
+        <div class="gmaps-cat">Comercio local · Ferretería / Gastronomía / Servicios</div>
+        <div class="gmaps-status"><span class="dot"></span> <strong>Abierto ahora</strong> · Cierra 20:00</div>
+        <div class="gmaps-addr">📍 Av. Ejemplo 1234, Buenos Aires · a 5 min</div>
+        <div class="gmaps-actions">
+          <button><span class="ic">🧭</span>Cómo llegar</button>
+          <button><span class="ic">📞</span>Llamar</button>
+          <button class="wa"><span class="ic">💬</span>WhatsApp</button>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="benefits-title">Beneficios de WhatsApp Business</h2>
+    <div class="benefit-list">
+      <div class="benefit-item">
+        <div class="b-ic">⚡</div>
+        <div class="b-text">
+          <h4>Respuestas automáticas</h4>
+          <p>Mensaje de bienvenida y de ausencia configurados para no perder ningún cliente.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="b-ic">📖</div>
+        <div class="b-text">
+          <h4>Catálogo integrado</h4>
+          <p>Mostrá productos o servicios con precios directamente dentro del chat.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="b-ic">🏷️</div>
+        <div class="b-text">
+          <h4>Etiquetas de clientes</h4>
+          <p>Organizá conversaciones por estado: nuevo, en negociación, pagado, etc.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="b-ic">🕒</div>
+        <div class="b-text">
+          <h4>Horario de atención visible</h4>
+          <p>Tus clientes saben al instante cuándo estás disponible para responder.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-card">Sitio demo — reemplazar nombre, fotos, horarios y número de WhatsApp por los datos reales del negocio antes de publicar.</div>
+  </div>
+</div>
 
 <script>
-  const PHONE = "5491122334455"; // ← reemplazar por el número real (código país + área sin 0/15)
+  /* =========================================================
+     NAVEGACIÓN ENTRE VISTAS
+  ========================================================= */
+  function showView(id){
+    // El scroll-behavior:smooth global hace que window.scrollTo(0,0)
+    // se anime en vez de saltar al instante; si eso ocurre justo cuando
+    // cambiamos de vista, la animación queda cortada a mitad de camino.
+    // Lo desactivamos un instante para forzar un salto real.
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+
+    const jumpTop = () => {
+      window.scrollTo(0, 0);
+      html.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    jumpTop();
+
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById(id);
+    target.classList.add('active');
+
+    // Forzar un reflow real del bloque recién mostrado.
+    void target.offsetHeight;
+
+    jumpTop();
+
+    // Algunos navegadores/WebViews móviles (in-app browser de WhatsApp,
+    // Instagram, etc.) no repintan el contenido recién mostrado hasta
+    // que detectan un scroll real. Simulamos uno mínimo para forzarlo.
+    const nudge = () => {
+      jumpTop();
+      window.scrollBy(0, 1);
+      window.scrollBy(0, -1);
+      jumpTop();
+    };
+
+    requestAnimationFrame(() => {
+      nudge();
+      requestAnimationFrame(() => {
+        nudge();
+        setTimeout(() => {
+          nudge();
+          html.style.scrollBehavior = prevBehavior;
+        }, 60);
+      });
+    });
+  }
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=> t.classList.remove('show'), 1800);
+  }
+
+  /* =========================================================
+     DEMO 1 — CATÁLOGO / GASTRONOMÍA
+  ========================================================= */
+  const PHONE_CATALOGO = "5491122334455"; // ← reemplazar por el número real
 
   const products = [
-    {sku:"HR-1042", name:"Taladro Percutor 1/2\" 750W", cat:"Herramientas", spec:"Mandril 13mm · reversible · maletín incluido", price:89900, icon:"🔧"},
-    {sku:"HR-2210", name:"Amoladora Angular 4.5\" 900W", cat:"Herramientas", spec:"Disco 115mm · protector ajustable", price:64500, icon:"⚙️"},
-    {sku:"HR-3305", name:"Compresor de Aire 50L 2HP", cat:"Herramientas", spec:"Monofásico 220V · presión máx. 8 bar", price:215000, icon:"🛠️"},
-    {sku:"FR-0087", name:"Kit Tornillos Autoperforantes x500", cat:"Ferretería", spec:"Punta broca · zincado · surtido de medidas", price:18200, icon:"🔩"},
-    {sku:"FR-1350", name:"Bulones Hexagonales M8 Caja x100", cat:"Ferretería", spec:"Acero grado 5 · con tuerca y arandela", price:9800, icon:"🔩"},
-    {sku:"FR-2280", name:"Bisagras Reforzadas 4\" (par)", cat:"Ferretería", spec:"Acero inoxidable · carga 40kg", price:7300, icon:"🔩"},
-    {sku:"SG-3301", name:"Casco de Seguridad Clase B", cat:"Seguridad", spec:"Ajuste a cremallera · certificado IRAM", price:12400, icon:"⛑️"},
-    {sku:"SG-4420", name:"Guantes Anticorte Nivel 5 (par)", cat:"Seguridad", spec:"Recubrimiento nitrilo · talles S-XL", price:6750, icon:"🧤"},
-    {sku:"SG-5510", name:"Arnés de Seguridad 4 Anillas", cat:"Seguridad", spec:"Con línea de vida 1.5m · certificado", price:34900, icon:"🦺"},
-    {sku:"MD-6602", name:"Calibre Digital 150mm", cat:"Medición", spec:"Precisión 0.01mm · display LCD", price:22300, icon:"📏"},
-    {sku:"MD-7715", name:"Nivel Láser Autonivelante", cat:"Medición", spec:"Alcance 20m · líneas cruz verde", price:54900, icon:"📐"},
-    {sku:"MD-8830", name:"Cinta Métrica 8m Reforzada", cat:"Medición", spec:"Traba automática · funda antigolpe", price:8100, icon:"📏"},
+    {sku:"PZ-01", name:"Pizza Muzzarella", cat:"Pizzas", spec:"Salsa de tomate, muzzarella y aceitunas", price:8500, icon:"🍕"},
+    {sku:"PZ-02", name:"Pizza Napolitana", cat:"Pizzas", spec:"Muzzarella, tomate, ajo y albahaca", price:9200, icon:"🍕"},
+    {sku:"HB-01", name:"Hamburguesa Completa", cat:"Hamburguesas", spec:"Carne, cheddar, lechuga, tomate y panceta", price:7200, icon:"🍔"},
+    {sku:"HB-02", name:"Hamburguesa Doble Cheddar", cat:"Hamburguesas", spec:"Doble carne, doble cheddar y salsa especial", price:8900, icon:"🍔"},
+    {sku:"EM-01", name:"Empanadas de Carne (docena)", cat:"Empanadas", spec:"Carne cortada a cuchillo, horneadas", price:6000, icon:"🥟"},
+    {sku:"EM-02", name:"Empanadas de Jamón y Queso (docena)", cat:"Empanadas", spec:"Receta casera, horneadas", price:5800, icon:"🥟"},
+    {sku:"AC-01", name:"Papas Fritas Grandes", cat:"Acompañamientos", spec:"Con cheddar y panceta a elección", price:3500, icon:"🍟"},
+    {sku:"AC-02", name:"Aros de Cebolla", cat:"Acompañamientos", spec:"Rebozados, porción para compartir", price:3200, icon:"🧅"},
+    {sku:"BB-01", name:"Gaseosa 1.5L", cat:"Bebidas", spec:"Línea Coca-Cola, a elección", price:2500, icon:"🥤"},
+    {sku:"BB-02", name:"Agua Mineral 500ml", cat:"Bebidas", spec:"Con o sin gas", price:1200, icon:"💧"},
   ];
+
+  const cart = {}; // sku -> qty
 
   const grid = document.getElementById('grid');
   const filtersEl = document.getElementById('filters');
   const countEl = document.getElementById('count');
   const categories = ["Todos", ...new Set(products.map(p=>p.cat))];
-  let active = "Todos";
+  let activeCat = "Todos";
 
-  function fmtPrice(n){
-    return n.toLocaleString('es-AR');
-  }
-
-  function waLink(product){
-    const base = product
-      ? `Hola, quiero cotizar envío nacional para: ${product.name} (SKU: ${product.sku}). ¿Podrían darme precio y tiempo de entrega a mi localidad?`
-      : `Hola, quiero consultar por el catálogo de Punto Fijo y cotizar envío nacional.`;
-    return `https://wa.me/${PHONE}?text=${encodeURIComponent(base)}`;
-  }
+  function fmtPrice(n){ return n.toLocaleString('es-AR'); }
 
   function renderFilters(){
     filtersEl.innerHTML = categories.map(c =>
-      `<button class="pill ${c===active?'active':''}" data-cat="${c}">${c}</button>`
+      `<button class="pill ${c===activeCat?'active':''}" data-cat="${c}">${c}</button>`
     ).join('');
     filtersEl.querySelectorAll('.pill').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        active = btn.dataset.cat;
+        activeCat = btn.dataset.cat;
         renderFilters();
         renderGrid();
       });
@@ -399,42 +851,233 @@
   }
 
   function renderGrid(){
-    const list = active==="Todos" ? products : products.filter(p=>p.cat===active);
+    const list = activeCat==="Todos" ? products : products.filter(p=>p.cat===activeCat);
     countEl.textContent = `${list.length} producto${list.length!==1?'s':''}`;
-    grid.innerHTML = list.map(p => `
+    grid.innerHTML = list.map(p => {
+      const qty = cart[p.sku] || 0;
+      return `
       <article class="card">
         <div class="card-media">
           <span class="card-tag">${p.cat}</span>
           <span>${p.icon}</span>
         </div>
         <div class="card-body">
-          <div class="card-sku">SKU ${p.sku}</div>
           <div class="card-name">${p.name}</div>
           <div class="card-spec">${p.spec}</div>
           <div class="card-price-row">
             <div class="card-price"><span class="cur">ARS</span>${fmtPrice(p.price)}</div>
           </div>
-          <button class="wa-btn" data-sku="${p.sku}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39c1.44.79 3.06 1.2 4.71 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0012.05 2h-.01zm5.8 14.1c-.24.68-1.4 1.33-1.93 1.4-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.91-1.26-4.81-4.18-4.96-4.38-.14-.2-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.6.83 2.06.9 2.21.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.29.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.29.14.46.12.63-.07.18-.19.75-.87.95-1.17.19-.29.39-.24.64-.14.26.09 1.65.78 1.93.92.29.14.47.21.54.33.07.12.07.68-.17 1.36z"/></svg>
-            Consultar / Cotizar envío
-          </button>
+          <div class="qty-row">
+            ${qty>0 ? `
+              <div class="qty-ctrl">
+                <button data-action="dec" data-sku="${p.sku}">−</button>
+                <span class="qty-val">${qty}</span>
+                <button data-action="inc" data-sku="${p.sku}">+</button>
+              </div>
+              <span style="font-size:0.78rem;color:var(--text-dim)">en el carrito</span>
+            ` : `
+              <button class="add-btn" data-action="inc" data-sku="${p.sku}">+ Agregar al carrito</button>
+            `}
+          </div>
         </div>
       </article>
-    `).join('');
+    `;
+    }).join('');
 
-    grid.querySelectorAll('.wa-btn').forEach(btn=>{
+    grid.querySelectorAll('[data-action]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        const product = products.find(p=>p.sku===btn.dataset.sku);
-        window.open(waLink(product), '_blank');
+        const sku = btn.dataset.sku;
+        if(btn.dataset.action === 'inc'){
+          cart[sku] = (cart[sku]||0) + 1;
+        } else {
+          cart[sku] = (cart[sku]||0) - 1;
+          if(cart[sku] <= 0) delete cart[sku];
+        }
+        renderGrid();
+        renderCartBar();
       });
     });
   }
 
-  document.getElementById('float-wa').href = waLink(null);
-  document.getElementById('hero-wa').href = waLink(null);
+  function cartTotal(){
+    return Object.entries(cart).reduce((sum,[sku,qty])=>{
+      const p = products.find(x=>x.sku===sku);
+      return sum + (p ? p.price*qty : 0);
+    }, 0);
+  }
+
+  function cartCount(){
+    return Object.values(cart).reduce((a,b)=>a+b, 0);
+  }
+
+  function renderCartBar(){
+    const bar = document.getElementById('cart-bar');
+    const count = cartCount();
+    if(count === 0){
+      bar.classList.remove('show');
+      return;
+    }
+    bar.classList.add('show');
+    document.getElementById('cart-items-label').textContent = `${count} producto${count!==1?'s':''} en el carrito`;
+    document.getElementById('cart-total').textContent = `ARS ${fmtPrice(cartTotal())}`;
+  }
+
+  function buildOrderMessage(){
+    const lines = Object.entries(cart).map(([sku,qty])=>{
+      const p = products.find(x=>x.sku===sku);
+      return `• ${qty}x ${p.name} — ARS ${fmtPrice(p.price*qty)}`;
+    });
+    const total = fmtPrice(cartTotal());
+    return `Hola! Quiero hacer el siguiente pedido:\n\n${lines.join('\n')}\n\nTotal: ARS ${total}\n\n¿Me confirman disponibilidad y tiempo de entrega?`;
+  }
+
+  document.getElementById('send-order-btn').addEventListener('click', ()=>{
+    if(cartCount() === 0){
+      showToast('Agregá al menos un producto');
+      return;
+    }
+    const msg = buildOrderMessage();
+    window.open(`https://wa.me/${PHONE_CATALOGO}?text=${encodeURIComponent(msg)}`, '_blank');
+  });
 
   renderFilters();
   renderGrid();
+  renderCartBar();
+
+  /* =========================================================
+     DEMO 2 — SISTEMA DE TURNOS
+  ========================================================= */
+  const PHONE_TURNOS = "5491122334455"; // ← reemplazar por el número real
+
+  const services = [
+    {id:"s1", name:"Corte de Pelo + Barba", dur:"45 min", price:12000},
+    {id:"s2", name:"Corte de Pelo", dur:"30 min", price:7500},
+    {id:"s3", name:"Pintura / Manicura", dur:"40 min", price:10000},
+    {id:"s4", name:"Coloración Completa", dur:"90 min", price:22000},
+  ];
+
+  const timeSlots = ["09:00","10:00","11:00","12:00","14:00","15:00","16:00","17:00","18:00","19:00"];
+
+  let turnoState = { serviceId:null, dayMode:null, customDate:null, time:null };
+
+  const serviceListEl = document.getElementById('service-list');
+  serviceListEl.innerHTML = services.map(s => `
+    <div class="service-option" data-id="${s.id}">
+      <div>
+        <div class="s-name">${s.name}</div>
+        <div class="s-dur">${s.dur}</div>
+      </div>
+      <div class="s-price">ARS ${s.price.toLocaleString('es-AR')}</div>
+    </div>
+  `).join('');
+  serviceListEl.querySelectorAll('.service-option').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      turnoState.serviceId = el.dataset.id;
+      serviceListEl.querySelectorAll('.service-option').forEach(o=>o.classList.remove('selected'));
+      el.classList.add('selected');
+      updateTurnoSummary();
+    });
+  });
+
+  const dayRowEl = document.getElementById('day-row');
+  const dayOptions = [
+    {id:'hoy', label:'Hoy', offset:0},
+    {id:'manana', label:'Mañana', offset:1},
+    {id:'pasado', label:'Pasado', offset:2},
+  ];
+  dayRowEl.innerHTML = dayOptions.map(d => `<button class="day-btn" data-offset="${d.offset}">${d.label}</button>`).join('');
+  dayRowEl.querySelectorAll('.day-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      dayRowEl.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const offset = parseInt(btn.dataset.offset,10);
+      const d = new Date();
+      d.setDate(d.getDate() + offset);
+      turnoState.dayMode = fmtDate(d);
+      turnoState.customDate = null;
+      document.getElementById('custom-date').value = '';
+      updateTurnoSummary();
+    });
+  });
+
+  document.getElementById('custom-date').addEventListener('change', (e)=>{
+    if(!e.target.value) return;
+    dayRowEl.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('selected'));
+    const [y,m,d] = e.target.value.split('-');
+    turnoState.customDate = `${d}/${m}/${y}`;
+    turnoState.dayMode = null;
+    updateTurnoSummary();
+  });
+
+  function fmtDate(d){
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const yyyy = d.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  }
+
+  const timeGridEl = document.getElementById('time-grid');
+  timeGridEl.innerHTML = timeSlots.map(t => `<button class="time-slot" data-time="${t}">${t}</button>`).join('');
+  timeGridEl.querySelectorAll('.time-slot').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      timeGridEl.querySelectorAll('.time-slot').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      turnoState.time = btn.dataset.time;
+      updateTurnoSummary();
+    });
+  });
+
+  document.getElementById('turno-nombre').addEventListener('input', updateTurnoSummary);
+  document.getElementById('turno-celular').addEventListener('input', updateTurnoSummary);
+
+  function getSelectedService(){
+    return services.find(s=>s.id===turnoState.serviceId);
+  }
+  function getSelectedDate(){
+    return turnoState.customDate || turnoState.dayMode;
+  }
+
+  function updateTurnoSummary(){
+    const service = getSelectedService();
+    const date = getSelectedDate();
+    const nombre = document.getElementById('turno-nombre').value.trim();
+    const box = document.getElementById('turno-summary');
+
+    if(!service && !date && !turnoState.time && !nombre){
+      box.innerHTML = 'Completá los datos para ver el resumen de tu turno.';
+      return;
+    }
+    box.innerHTML = `
+      <strong>Servicio:</strong> ${service ? service.name+' — ARS '+service.price.toLocaleString('es-AR') : '—'}<br>
+      <strong>Día:</strong> ${date || '—'} &nbsp; <strong>Hora:</strong> ${turnoState.time ? turnoState.time+'hs' : '—'}<br>
+      <strong>Nombre:</strong> ${nombre || '—'}
+    `;
+  }
+
+  document.getElementById('reservar-btn').addEventListener('click', ()=>{
+    const service = getSelectedService();
+    const date = getSelectedDate();
+    const time = turnoState.time;
+    const nombre = document.getElementById('turno-nombre').value.trim();
+
+    if(!service || !date || !time || !nombre){
+      showToast('Completá servicio, día, hora y nombre');
+      return;
+    }
+
+    const msg = `Hola! Quiero agendar un turno para ${service.name} el día ${date} a las ${time}hs. Mi nombre es ${nombre}.`;
+    window.open(`https://wa.me/${PHONE_TURNOS}?text=${encodeURIComponent(msg)}`, '_blank');
+  });
+
+  /* =========================================================
+     DEMO 3 — FICHA GOOGLE + WHATSAPP BUSINESS (informativa)
+  ========================================================= */
+  document.querySelectorAll('.gmaps-actions .wa').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const msg = "Hola! Vi su ficha en Google y quería hacer una consulta.";
+      window.open(`https://wa.me/5491122334455?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+  });
 </script>
 
 </body>
