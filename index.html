@@ -147,6 +147,7 @@
       radial-gradient(circle at 88% 18%, rgba(185,174,224,0.16), transparent 45%),
       var(--bg);
   }
+  #view-selector:not(.active){display:none;}
   .selector-wrap{
     max-width:520px; margin:0 auto; width:100%;
     flex:1; display:flex; flex-direction:column;
@@ -755,51 +756,19 @@
      NAVEGACIÓN ENTRE VISTAS
   ========================================================= */
   function showView(id){
-    // El scroll-behavior:smooth global hace que window.scrollTo(0,0)
-    // se anime en vez de saltar al instante; si eso ocurre justo cuando
-    // cambiamos de vista, la animación queda cortada a mitad de camino.
-    // Lo desactivamos un instante para forzar un salto real.
     const html = document.documentElement;
     const prevBehavior = html.style.scrollBehavior;
     html.style.scrollBehavior = 'auto';
-
-    const jumpTop = () => {
-      window.scrollTo(0, 0);
-      html.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
-
-    jumpTop();
 
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     const target = document.getElementById(id);
     target.classList.add('active');
 
-    // Forzar un reflow real del bloque recién mostrado.
     void target.offsetHeight;
-
-    jumpTop();
-
-    // Algunos navegadores/WebViews móviles (in-app browser de WhatsApp,
-    // Instagram, etc.) no repintan el contenido recién mostrado hasta
-    // que detectan un scroll real. Simulamos uno mínimo para forzarlo.
-    const nudge = () => {
-      jumpTop();
-      window.scrollBy(0, 1);
-      window.scrollBy(0, -1);
-      jumpTop();
-    };
-
-    requestAnimationFrame(() => {
-      nudge();
-      requestAnimationFrame(() => {
-        nudge();
-        setTimeout(() => {
-          nudge();
-          html.style.scrollBehavior = prevBehavior;
-        }, 60);
-      });
-    });
+    window.scrollTo({top:0, left:0, behavior:'auto'});
+    html.scrollTop = 0;
+    document.body.scrollTop = 0;
+    html.style.scrollBehavior = prevBehavior;
   }
 
   function showToast(msg){
